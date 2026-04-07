@@ -101,7 +101,7 @@ const WallCalendar = () => {
 
       {/* Top Section */}
       <div className="top-section">
-        <img src="/hero.png" alt="Hero representation" className="hero-image" />
+        <img src="hero.png" alt="Hero representation" className="hero-image" />
         <div className="date-overlay">
           <div className="month-controls">
             <button onClick={handlePrevMonth} aria-label="Previous month"><ChevronLeft size={24} /></button>
