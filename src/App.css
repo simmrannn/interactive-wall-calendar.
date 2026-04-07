@@ -1,0 +1,323 @@
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 900px;
+  background: var(--panel-bg);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25), 0 0 20px rgba(0,0,0,0.05);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Spiral binding */
+.spiral-binding {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  display: flex;
+  justify-content: space-evenly;
+  z-index: 10;
+  padding: 0 40px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.spiral-ring {
+  width: 8px;
+  height: 38px;
+  background: linear-gradient(to right, #e5e7eb, #9ca3af, #e5e7eb);
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3), inset 1px -1px 2px rgba(255,255,255,0.8);
+  position: relative;
+}
+.spiral-ring::after, .spiral-ring::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background: #374151;
+  border-radius: 50%;
+  z-index: -1;
+  box-shadow: inset 0px 3px 6px rgba(0,0,0,0.6);
+}
+.spiral-ring::after { top: -2px; }
+.spiral-ring::before { bottom: -2px; }
+
+.top-section {
+  position: relative;
+  height: 450px;
+  overflow: hidden;
+  background: #111;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.95;
+}
+
+.date-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #2563eb; /* Matches the vibrant blue in image */
+  color: white;
+  padding: 24px 48px;
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
+  min-width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -10px -10px 30px rgba(0,0,0,0.3);
+}
+
+.date-overlay .month-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-left: 20px;
+}
+
+.date-display {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.date-display h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.date-display h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.month-controls button {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  color: white;
+}
+.month-controls button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.bottom-section {
+  display: flex;
+  padding: 48px;
+  gap: 64px;
+}
+
+.notes-area {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.notes-header {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.notes-lines-container {
+  position: relative;
+  flex: 1;
+  min-height: 250px;
+}
+
+.notes-textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  line-height: 2.5rem;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  outline: none;
+  padding: 0;
+  z-index: 2;
+}
+
+.notes-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(transparent, transparent calc(2.5rem - 1px), var(--line-color) calc(2.5rem - 1px), var(--line-color) 2.5rem);
+  z-index: 1;
+}
+
+.calendar-grid-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.day-name {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px 0; /* vertical gap for distinct rows */
+}
+
+.date-cell-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 52px;
+  cursor: pointer;
+}
+
+.date-cell-wrapper.in-range::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  background-color: #eff6ff; /* Super light blue connecting bg */
+  z-index: 1;
+}
+
+.date-cell-wrapper.range-start::before {
+  border-top-left-radius: 26px;
+  border-bottom-left-radius: 26px;
+  left: 50%;
+}
+
+.date-cell-wrapper.range-end::before {
+  border-top-right-radius: 26px;
+  border-bottom-right-radius: 26px;
+  right: 50%;
+}
+
+.date-cell {
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-weight: 500;
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+}
+
+.date-cell.weekend {
+  color: var(--weekend-color);
+  font-weight: 600;
+}
+
+.date-cell.other-month {
+  color: #d1d5db;
+  pointer-events: none;
+}
+
+.date-cell:hover {
+  background-color: #f3f4f6;
+}
+
+.date-cell.selected {
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+}
+
+.date-cell.selected.weekend {
+  color: white;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body {
+    padding: 2rem 1rem;
+  }
+  
+  .bottom-section {
+    flex-direction: column;
+    padding: 32px 24px;
+    gap: 40px;
+  }
+  
+  .calendar-grid-area {
+    order: -1;
+  }
+  
+  .top-section {
+    height: 300px;
+  }
+  
+  .date-overlay {
+    padding: 16px 24px;
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .date-display h1 {
+    font-size: 1.6rem;
+  }
+  .date-display h2 {
+    font-size: 1.1rem;
+  }
+  .month-controls button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .notes-area {
+    min-height: 250px;
+  }
+}
